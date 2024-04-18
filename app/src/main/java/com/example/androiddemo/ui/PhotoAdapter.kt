@@ -27,9 +27,10 @@ import java.io.InputStream
 import java.net.HttpURLConnection
 import java.net.URL
 
-class PhotoAdapter(var context: Context) : PagingDataAdapter<ResponseMain, PhotoAdapter.PhotoHolder>(
-    diffCallback
-) {
+class PhotoAdapter(var context: Context) :
+    PagingDataAdapter<ResponseMain, PhotoAdapter.PhotoHolder>(
+        diffCallback
+    ) {
     var widthPixels = 0
     private lateinit var imageLoader: ImageLoader
 
@@ -40,6 +41,7 @@ class PhotoAdapter(var context: Context) : PagingDataAdapter<ResponseMain, Photo
         imageLoader = ImageLoader(context)
 
     }
+
     private val cache: LruCache<String, Bitmap> =
         object : LruCache<String, Bitmap>((Runtime.getRuntime().maxMemory() / 1024 / 8).toInt()) {
             override fun sizeOf(key: String, bitmap: Bitmap): Int {
@@ -57,37 +59,42 @@ class PhotoAdapter(var context: Context) : PagingDataAdapter<ResponseMain, Photo
             w
         )
         holder.itemHomeLayoutBinding.cardView.layoutParams = params
-        holder.itemHomeLayoutBinding.image.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.ic_launcher_background))
+        holder.itemHomeLayoutBinding.image.setImageDrawable(
+            ContextCompat.getDrawable(
+                context,
+                R.color.white
+            )
+        )
 
-      /*  var item = getItem(position)
-        val bitmap = cache.get(item?.urls?.regular)
-        if (bitmap != null) {
-            holder.itemHomeLayoutBinding.image.setImageBitmap(bitmap)
-        } else {
-            holder.itemHomeLayoutBinding.image.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.ic_launcher_background))
-            DownloadImageTask(holder.itemHomeLayoutBinding.image).execute(item?.urls?.regular)
-        }*/
+        /*  var item = getItem(position)
+          val bitmap = cache.get(item?.urls?.regular)
+          if (bitmap != null) {
+              holder.itemHomeLayoutBinding.image.setImageBitmap(bitmap)
+          } else {
+              holder.itemHomeLayoutBinding.image.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.ic_launcher_background))
+              DownloadImageTask(holder.itemHomeLayoutBinding.image).execute(item?.urls?.regular)
+          }*/
 
-       GlobalScope.launch(Dispatchers.IO) {
+        GlobalScope.launch(Dispatchers.IO) {
             var item = getItem(holder.bindingAdapterPosition)
             holder.itemHomeLayoutBinding.image.tag = item?.urls?.small
             var bm = item?.urls?.small?.let { imageLoader.loadImage(it) }
-            item?.urls?.small?.let { Log.e("ADAPTER", "$position : "+it) }
+            item?.urls?.small?.let { Log.e("ADAPTER", "$position : " + it) }
             // var bm= allData[position].urls?.regular?.let { imageLoader.loadImage(it) }
             withContext(Dispatchers.Main)
             {
-                holder.itemHomeLayoutBinding.image.setImageBitmap(bm)
 
-//                if(holder.itemHomeLayoutBinding.image.tag.equals(item?.urls?.small))
-//                {
-//
-//                }
-//                else{
-//                    holder.itemHomeLayoutBinding.image.setImageBitmap(null)
-//                }
-
-
-
+                if (holder.itemHomeLayoutBinding.image.tag.equals(item?.urls?.small)) {
+                    holder.itemHomeLayoutBinding.image.setImageBitmap(bm)
+                } else {
+                    //Error handling
+                    holder.itemHomeLayoutBinding.image.setImageDrawable(
+                        ContextCompat.getDrawable(
+                            holder.itemView.context,
+                            R.drawable.placeholder_image
+                        )
+                    )
+                }
             }
         }
     }
@@ -101,12 +108,14 @@ class PhotoAdapter(var context: Context) : PagingDataAdapter<ResponseMain, Photo
 
     object diffCallback : DiffUtil.ItemCallback<ResponseMain>() {
         override fun areItemsTheSame(oldItem: ResponseMain, newItem: ResponseMain) =
-            oldItem.id.equals( newItem.id)
+            oldItem.id.equals(newItem.id)
 
         override fun areContentsTheSame(oldItem: ResponseMain, newItem: ResponseMain) =
             oldItem == newItem
     }
-    private inner class DownloadImageTask(var imageView: ImageView) : AsyncTask<String, Void, Bitmap>() {
+
+    private inner class DownloadImageTask(var imageView: ImageView) :
+        AsyncTask<String, Void, Bitmap>() {
         private var imageUrl: String? = null
 
         override fun doInBackground(vararg params: String): Bitmap? {

@@ -14,13 +14,12 @@
  * limitations under the License.
  */
 
-package com.example.android.codelabs.paging.ui
+package com.example.androiddemo.networking
 
 import androidx.lifecycle.AbstractSavedStateViewModelFactory
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.savedstate.SavedStateRegistryOwner
-import com.example.androiddemo.networking.PhotoRespository
 import com.example.androiddemo.ui.PhotoViewModel
 
 

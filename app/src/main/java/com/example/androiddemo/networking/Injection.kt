@@ -19,7 +19,7 @@
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.savedstate.SavedStateRegistryOwner
-import com.example.android.codelabs.paging.ui.ViewModelFactory
+import com.example.androiddemo.networking.ViewModelFactory
 import com.example.androiddemo.networking.PhotoRespository
 
 /**

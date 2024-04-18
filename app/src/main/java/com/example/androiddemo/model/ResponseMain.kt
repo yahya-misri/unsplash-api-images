@@ -1,10 +1,5 @@
 package com.example.androiddemo.model
 
-import com.example.ResponseMain.AlternativeSlugs
-import com.example.ResponseMain.Links
-import com.example.ResponseMain.TopicSubmissions
-import com.example.ResponseMain.Urls
-import com.example.ResponseMain.User
 import com.google.gson.annotations.SerializedName
 
 data class ResponseMain(@SerializedName("id"                       ) var id                     : String?           = null,
@@ -27,4 +22,5 @@ data class ResponseMain(@SerializedName("id"                       ) var id     
                         @SerializedName("current_user_collections" ) var currentUserCollections : List<String> = arrayListOf(),
                         @SerializedName("topic_submissions"        ) var topicSubmissions       : TopicSubmissions? = TopicSubmissions(),
                         @SerializedName("asset_type"               ) var assetType              : String?           = null,
-                        @SerializedName("user"                     ) var user                   : User?             = User())
+                        @SerializedName("user"                     ) var user                   : User?             = User()
+)

@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.Flow
 
 class PhotoViewModel(photoRespository: PhotoRespository):ViewModel() {
     val items: Flow<PagingData<ResponseMain>> = Pager(
-        config = PagingConfig(pageSize = 10, 1,enablePlaceholders = false,10),
+        config = PagingConfig(pageSize = 10, 1,enablePlaceholders = false,15),
         pagingSourceFactory = { photoRespository.photoPagingSource() }
     )
         .flow

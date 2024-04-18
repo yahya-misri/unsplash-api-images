@@ -1,4 +1,4 @@
-package com.example.ResponseMain
+package com.example.androiddemo.model
 
 import com.google.gson.annotations.SerializedName
 
